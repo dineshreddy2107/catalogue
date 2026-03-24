@@ -3,33 +3,37 @@ pipeline {
         label 'agent-1'
     }
     environment {
-        COURSE = 'jenkins'
+        appVersion = ''
     }
     options {
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
     }
-    parameters {
+    /* parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
         text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
         booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
-    }
+    } */
     stages {
-        stage('Build') {
+       
+        stage('Read package.json') {
             steps {
                 script {
-                    sh """
-                     echo "Building..."
-                     sleep 10
-                     
-                     env
-                    """
+                    // Read the entire package.json file into a Groovy map/object
+                    def packageJSON = readJSON file: 'package.json'
+
+                    // Access specific properties, for example, the version or name
+                     appVersion = packageJSON.version
+                    echo "Package version: ${appVersion}"
+                    
                 }
             }
         }
-        stage('Example') {
+
+        
+       /*  stage('Example') {
             steps {
                 echo "Hello ${params.PERSON}"
 
@@ -41,7 +45,7 @@ pipeline {
 
                 echo "Password: ${params.PASSWORD}"
             }
-        }
+        } */
         stage('Test ') {
             steps {
                 script {
