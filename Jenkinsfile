@@ -33,19 +33,16 @@ pipeline {
         }
 
         
-       /*  stage('Example') {
-            steps {
-                echo "Hello ${params.PERSON}"
+       stage('Install Dependencies') {
+        steps{
+            script {
+                sh """
+                 npm install 
 
-                echo "Biography: ${params.BIOGRAPHY}"
-
-                echo "Toggle: ${params.TOGGLE}"
-
-                echo "Choice: ${params.CHOICE}"
-
-                echo "Password: ${params.PASSWORD}"
+                """
             }
-        } */
+        }
+       }
         stage('Test ') {
             steps {
                 script {
